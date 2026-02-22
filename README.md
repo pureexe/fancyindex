@@ -7,15 +7,15 @@ A modern dark-themed UI for the NGINX `ngx_http_fancyindex_module`, designed for
 This theme enhances the default FancyIndex experience with automatic documentation preview and built-in multi-mirror support.
 
 🔗 **Live Example:**  
-https://east.ph.in.th/
-https://west.ph.in.th/
+- https://east.ph.in.th/
+- https://west.ph.in.th/
 
 
 ## ✨ Features
 
 ### 📄 Automatic README Preview
 
-If a `README.md` file exists i![alt text](image.png) the current directory, it is automatically rendered and displayed below the file list.
+If a `README.md` file exists in the current directory, it is automatically rendered and displayed below the file list.
 
 This allows each directory to function as a self-documenting dataset or project page without requiring a separate web framework.
 
