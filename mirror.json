@@ -1,0 +1,13 @@
+{
+    "current_mirror": "east",
+    "mirrors": [
+        {
+            "name":"east",
+            "url":"https://east.ph.in.th/"
+        },
+        {
+            "name":"west",
+            "url":"https://west.ph.in.th/"
+        }
+    ]
+}

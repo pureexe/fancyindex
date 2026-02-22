@@ -1,0 +1,118 @@
+/* Flexbox setup to push footer to the bottom */
+body { 
+    padding-top: 4rem; 
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Custom Fixed Navbar */
+.custom-navbar { 
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 30;
+    background-color: var(--bulma-scheme-main-bis);
+    border-bottom: 1px solid var(--bulma-border); 
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+/* Hide Nginx's default headers completely */
+body > h1, .container > h1 { display: none !important; }
+
+/* Style Nginx's generated #list table */
+#list { 
+    width: 100%; 
+    margin-top: 0.5rem; 
+    margin-bottom: 3rem; 
+    border-collapse: collapse; 
+    color: var(--bulma-text);
+}
+#list th, #list td { 
+    padding: 0.8em 1em; 
+    border-bottom: 1px solid var(--bulma-border); 
+    vertical-align: middle; 
+}
+
+#list th { font-weight: 600; white-space: nowrap; }
+#list th a { color: var(--bulma-text-strong); text-decoration: none; display: inline-block; }
+#list th a:hover { color: var(--bulma-link); }
+
+#list tbody tr:hover { background-color: var(--bulma-scheme-main-ter); }
+
+#list td.link a { 
+    color: var(--bulma-text); 
+    text-decoration: none; 
+    display: flex;
+    align-items: center;
+}
+#list td.link a:hover { color: var(--bulma-link); }
+
+/* Right-align Date and Size columns */
+#list th:nth-child(2), #list td.size,
+#list th:nth-child(3), #list td.date { text-align: right; }
+
+/* Mobile Responsiveness: Hide Size and Date columns */
+@media screen and (max-width: 768px) {
+    #list th:nth-child(2), #list td.size,
+    #list th:nth-child(3), #list td.date {
+        display: none !important;
+    }
+}
+
+/* Breadcrumb Box - Matches README box but tighter padding */
+.breadcrumb-box {
+    background-color: var(--bulma-scheme-main-bis); 
+    border: 1px solid var(--bulma-border); 
+    border-radius: 8px; 
+    box-shadow: none !important; 
+    padding: 1rem 1.5rem;
+}
+
+/* README Box - Flat, clean design */
+.readme-box { 
+    background-color: var(--bulma-scheme-main-bis); 
+    border: 1px solid var(--bulma-border); 
+    border-radius: 8px; 
+    box-shadow: none !important; 
+    padding: 2rem;
+}
+
+/* Fallback raw text styling for .txt files */
+.raw-text { 
+    background: transparent; 
+    padding: 0; 
+    color: var(--bulma-text); 
+    white-space: pre-wrap; 
+    font-family: var(--bulma-family-monospace); 
+}
+
+.mirror-btn { text-transform: capitalize; }
+
+/* GitHub Markdown Theme Overrides for Bulma Dark */
+.markdown-body {
+    background-color: transparent !important;
+}
+
+/* --- Fix for Bulma overriding Markdown lists --- */
+.markdown-body ul, 
+.markdown-body ol {
+    padding-left: 2em !important;
+    margin-bottom: 1em !important;
+}
+
+.markdown-body ul {
+    list-style-type: disc !important;
+}
+
+.markdown-body ol {
+    list-style-type: decimal !important;
+}
+
+/* Fix nested lists */
+.markdown-body ul ul, 
+.markdown-body ol ul {
+    list-style-type: circle !important;
+    margin-bottom: 0 !important;
+}
