@@ -7,11 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const lang = token.lang || '';
                 const text = token.text || '';
                 
-                // Check if Highlight.js supports the language, otherwise fallback to plaintext
                 const validLanguage = hljs.getLanguage(lang) ? lang : 'plaintext';
                 const highlighted = hljs.highlight(text, { language: validLanguage }).value;
                 
-                // Return the formatted HTML block
                 return `<pre><code class="hljs language-${lang}">${highlighted}</code></pre>`;
             }
         }
@@ -51,7 +49,11 @@ document.addEventListener('DOMContentLoaded', () => {
         breadcrumbList.appendChild(li);
     });
 
-    // --- 3. Manage Table Rows ---
+    // --- 3. Manage Table Rows & Find README ---
+    // Variables to store the exact filename if we find them in the list
+    let exactReadmeMd = null;
+    let exactReadmeTxt = null;
+
     if (listTable) {
         const tableRows = listTable.querySelectorAll('tbody tr');
         let visibleFilesCount = 0;
@@ -72,6 +74,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         iconHtml = `<span class="icon is-small mr-2 has-text-grey-light"><i class="fas fa-folder"></i></span>`;
                     } else {
                         iconHtml = `<span class="icon is-small mr-2 has-text-grey-light"><i class="fas fa-file-lines"></i></span>`;
+                        
+                        // Case-insensitive check for README files
+                        const lowerCaseName = text.toLowerCase();
+                        if (lowerCaseName === 'readme.md') {
+                            exactReadmeMd = text; // Save exact original casing
+                        } else if (lowerCaseName === 'readme.txt') {
+                            exactReadmeTxt = text; // Save exact original casing
+                        }
                     }
                     
                     linkElement.innerHTML = iconHtml + linkElement.innerHTML;
@@ -119,33 +129,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 5. Fetch and Render README Logic ---
-    async function loadReadme() {
+    async function loadReadme(mdFilename, txtFilename) {
+        // If no readme was found in the table, don't even try to fetch anything
+        if (!mdFilename && !txtFilename) return; 
+
         const container = document.getElementById('readme-container');
         const contentDiv = document.getElementById('readme-content');
         const headerDiv = document.getElementById('readme-header');
         const titleText = document.getElementById('readme-title-text');
 
         try {
-            let response = await fetch('README.md');
-            if (response.ok) {
-                let text = await response.text();
-                contentDiv.innerHTML = marked.parse(text);
-                headerDiv.style.display = 'none'; 
-                container.style.display = 'block';
-                return; 
+            // Check for markdown file first
+            if (mdFilename) {
+                let response = await fetch(mdFilename);
+                if (response.ok) {
+                    let text = await response.text();
+                    contentDiv.innerHTML = marked.parse(text);
+                    headerDiv.style.display = 'none'; 
+                    container.style.display = 'block';
+                    return; // Stop here if MD loaded
+                }
             }
             
-            response = await fetch('README.txt');
-            if (!response.ok) {
-                response = await fetch('readme.txt');
-            }
-
-            if (response.ok) {
-                let text = await response.text();
-                contentDiv.innerHTML = `<pre class="raw-text">${text}</pre>`;
-                titleText.innerText = 'README.txt';
-                headerDiv.style.display = 'block'; 
-                container.style.display = 'block';
+            // Check for text file next
+            if (txtFilename) {
+                let response = await fetch(txtFilename);
+                if (response.ok) {
+                    let text = await response.text();
+                    contentDiv.innerHTML = `<pre class="raw-text">${text}</pre>`;
+                    titleText.innerText = txtFilename; // Use exact actual filename in the UI
+                    headerDiv.style.display = 'block'; 
+                    container.style.display = 'block';
+                }
             }
         } catch (error) {
             console.error("No README found or error loading it:", error);
@@ -153,5 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     loadMirrors();
-    loadReadme();
+    
+    // Trigger the load using the exact filenames found in the directory scan
+    loadReadme(exactReadmeMd, exactReadmeTxt);
 });
