@@ -1,6 +1,6 @@
 # FancyIndex Research Theme
 
-![Preview](preview.png)
+![Preview](preview.jpg)
 
 A modern dark-themed UI for the NGINX `ngx_http_fancyindex_module`, designed for hosting research datasets, benchmarks, and public file repositories.
 
@@ -63,7 +63,7 @@ Clone this repository into a hidden directory named:
 Example:
 
 ```bash
-git clone https://github.com/<your-repo>.git /var/www/html/.fancyindex
+git clone https://github.com/pureexe/fancyindex.git /var/www/html/.fancyindex
 ```
 
 > The directory must be named `.fancyindex` (with a leading dot).
